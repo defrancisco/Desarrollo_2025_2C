@@ -7,7 +7,7 @@ FROM python:3.10-alpine
 # Añadidos bash y coreutils para la compatibilidad con scripts de Spark y otras utilidades.
 RUN apk add --no-cache openjdk11 wget ca-certificates \
     gcc musl-dev python3-dev linux-headers fontconfig ttf-dejavu bash coreutils \
-    git
+    git texlive-xetex
 
 # Variables de entorno para Spark y Java
 ENV JAVA_HOME="/usr/lib/jvm/java-11-openjdk" \
