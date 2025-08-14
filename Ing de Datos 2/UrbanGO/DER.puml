@@ -1,0 +1,50 @@
+@startuml
+!theme plain
+
+entity Usuarios {
+  * id_usuario : INT <<PK>>
+  --
+  nombre : VARCHAR(100)
+  email : VARCHAR(100) <<UNIQUE>>
+  telefono : VARCHAR(20) <<UNIQUE>>
+  fecha_registro : DATETIME
+}
+
+entity Vehiculos {
+  * id_vehiculo : INT <<PK>>
+  --
+  tipo : ENUM('monopatin', 'bicicleta', 'auto')
+  modelo : VARCHAR(50)
+  anio : INT
+  estado : ENUM('disponible', 'en_uso', 'mantenimiento')
+}
+
+entity Estaciones {
+  * id_estacion : INT <<PK>>
+  --
+  nombre_estacion : VARCHAR(100) <<UNIQUE>>
+  ciudad : VARCHAR(50)
+  latitud : DECIMAL(9,6)
+  longitud : DECIMAL(9,6)
+}
+
+entity Viajes {
+  * id_viaje : INT <<PK>>
+  --
+  id_usuario : INT <<FK>>
+  id_vehiculo : INT <<FK>>
+  id_estacion_origen : INT <<FK>>
+  id_estacion_destino : INT <<FK>>
+  fecha_inicio : DATETIME
+  fecha_fin : DATETIME
+  costo : DECIMAL(8,2)
+  metodo_pago : VARCHAR(50)
+}
+
+Usuarios "1" -- "N" Viajes : realiza >
+Vehiculos "1" -- "N" Viajes : usado_en >
+
+Estaciones "1" -- "N" Viajes : origen >
+Estaciones "1" -- "N" Viajes : destino >
+
+@enduml

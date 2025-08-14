@@ -1,0 +1,30 @@
+// .devcontainer/devcontainer.json
+{
+  "name": "Data Engineering with PySpark",
+  // Usa docker-compose para levantar los servicios
+  "dockerComposeFile": [
+    "docker-compose.yml"
+  ],
+  // Especifica cuál de los servicios de docker-compose es el contenedor principal de tu app
+  "service": "app",
+  // Directorio de trabajo
+  "workspaceFolder": "/workspace",
+  // Opcional: Extensiones de VS Code que se instalarán automáticamente en el contenedor
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        "ms-python.python",
+        "ms-toolsai.jupyter",
+        "jebbs.plantuml"
+      ]
+    }
+  },
+  // Reenvía puertos para que puedas acceder a ellos desde tu máquina
+  "forwardPorts": [3306, 6379, 8888],
+  // Asegurarse de que las variables de entorno estén disponibles en el contenedor en tiempo de ejecución
+  "containerEnv": {
+    "MYSQL_CONNECTOR_VERSION": "8.0.33"
+  }
+}
