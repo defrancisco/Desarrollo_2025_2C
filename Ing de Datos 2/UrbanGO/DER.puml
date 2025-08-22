@@ -5,7 +5,7 @@ entity Usuarios {
   * id_usuario : INT <<PK>>
   --
   nombre : VARCHAR(100)
-  email : VARCHAR(100) <<UNIQUE>>
+  email : VARCHAR(100) <<UNIQUE, NOT NULL>>
   telefono : VARCHAR(20) <<UNIQUE>>
   fecha_registro : DATETIME
 }
@@ -22,7 +22,7 @@ entity Vehiculos {
 entity Estaciones {
   * id_estacion : INT <<PK>>
   --
-  nombre_estacion : VARCHAR(100) <<UNIQUE>>
+  nombre_estacion : VARCHAR(100) <<UNIQUE, NOT NULL>>
   ciudad : VARCHAR(50)
   latitud : DECIMAL(9,6)
   longitud : DECIMAL(9,6)
@@ -31,14 +31,57 @@ entity Estaciones {
 entity Viajes {
   * id_viaje : INT <<PK>>
   --
-  id_usuario : INT <<FK>>
-  id_vehiculo : INT <<FK>>
-  id_estacion_origen : INT <<FK>>
-  id_estacion_destino : INT <<FK>>
+  id_usuario : INT <<FK, NOT NULL>>
+  id_vehiculo : INT <<FK, NOT NULL>>
+  id_estacion_origen : INT <<FK, NOT NULL>>
+  id_estacion_destino : INT <<FK, NOT NULL>>
   fecha_inicio : DATETIME
   fecha_fin : DATETIME
   costo : DECIMAL(8,2)
   metodo_pago : VARCHAR(50)
+  monto_pagado : DECIMAL(8,2)
+}
+
+entity Promociones {
+  * id_promocion : INT <<PK>>
+  --
+  codigo_promocion : VARCHAR(20) <<UNIQUE, NOT NULL>>
+  descripcion : TEXT
+  tipo_descuento : ENUM('porcentaje', 'monto_fijo')
+  valor_descuento : DECIMAL(5,2)
+  fecha_validez_desde : DATE
+  fecha_validez_hasta : DATE
+}
+
+entity UsuarioPromocion {
+  * id_usuario_promocion : INT <<PK>>
+  --
+  id_usuario : INT <<FK>>
+  id_promocion : INT <<FK>>
+  fecha_asignacion : DATETIME
+  redimida : BOOLEAN
+}
+
+entity Tags {
+  * id_tag : INT <<PK>>
+  --
+  nombre : VARCHAR(50) <<UNIQUE>>
+}
+
+entity VehiculoTag {
+  * id_vehiculo : INT <<PK, FK>>
+  * id_tag : INT <<PK, FK>>
+  --
+  fecha_asignacion : DATETIME
+}
+
+entity Mantenimientos {
+  * id_mantenimiento : INT <<PK>>
+  --
+  id_vehiculo : INT <<FK>>
+  fecha_mantenimiento : DATETIME
+  descripcion : TEXT
+  costo : DECIMAL(8,2)
 }
 
 Usuarios "1" -- "N" Viajes : realiza >
@@ -47,4 +90,12 @@ Vehiculos "1" -- "N" Viajes : usado_en >
 Estaciones "1" -- "N" Viajes : origen >
 Estaciones "1" -- "N" Viajes : destino >
 
+Usuarios "1" -- "N" UsuarioPromocion
+Promociones "1" -- "N" UsuarioPromocion
+
+Vehiculos "1" -- "N" Mantenimientos
+
+' Relación de muchos a muchos entre Vehiculos y Tags
+Vehiculos "1" -- "N" VehiculoTag
+Tags "1" -- "N" VehiculoTag
 @enduml
