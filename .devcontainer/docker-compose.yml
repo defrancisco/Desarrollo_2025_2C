@@ -24,11 +24,23 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-
-  redis:
-    image: redis:latest
+  # Nuevo servicio para MongoDB
+  mongodb:
+    image: mongo:latest
+    # Variables de entorno para MongoDB
+    environment:
+      # No es necesario establecer un usuario y contraseña para un entorno de desarrollo simple.
+      # Para producción, es muy recomendable.
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    # Mapea el puerto por defecto de MongoDB (27017)
     ports:
-      - "6379:6379"
+      - "27017:27017"
+    # Monta un volumen para que los datos persistan
+    volumes:
+      - mongodb_data:/data/db
+      - ..:/workspace:cached
 
 volumes:
   mysql_data:
+  mongodb_data:

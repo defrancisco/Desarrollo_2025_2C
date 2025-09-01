@@ -1,0 +1,62 @@
+[
+  {
+    "nombre": "Ana",
+    "apellido": "López",
+    "edad": 22,
+    "carrera": "Ingeniería",
+    "materias_aprobadas": ["Matemática I", "Física I", "Programación I"]
+  },
+  {
+    "nombre": "Carlos",
+    "email": "cmartinez@example.com",
+    "edad": 24,
+    "situacion_academica": {
+      "estado": "regular",
+      "promedio": 7.5
+    }
+  },
+  {
+    "nombre": "Lucía",
+    "apellido": "Gómez",
+    "carrera": "Medicina",
+    "materias_aprobadas": [],
+    "telefono": {
+      "tipo": "celular",
+      "numero": "+54 9 11 2345-6789"
+    }
+  },
+  {
+    "nombre": "Mario",
+    "apellido": "Fernández",
+    "edad": 20,
+    "anio_ingreso": 2022,
+    "becado": true
+  },
+  {
+    "nombre": "Isabel",
+    "apellido": "Ramírez",
+    "edad": 25,
+    "carrera": "Psicología",
+    "cursos_extracurriculares": [
+      { "nombre": "Introducción a la filosofía", "horas": 12 },
+      { "nombre": "Lengua de señas", "horas": 20 }
+    ]
+  },
+  {
+    "nombre": "Diego",
+    "apellido": "Suárez",
+    "observaciones": null,
+    "edad": "23 años",  
+    "historial": {
+      "cambios_de_carrera": 2,
+      "carreras": ["Arquitectura", "Diseño Industrial"]
+    }
+  },
+  {
+    "nombre": "Paula",
+    "apellido": "Delgado",
+    "materias_aprobadas": ["Biología", "Anatomía"],
+    "estado": "libre",
+    "ultima_conexion": { "$date": "2025-08-01T14:35:00Z" }
+  }
+]
