@@ -1,3 +1,6 @@
+# para acceder a la shell en la conf actual:
+docker exec -it cd7920f544c536bbc32f57ab3ba25efd07ba405aa35b4c5bc175fc598590fdd9 bash
+
 # Comandos ejecutados desde la shell para mongoDB
 mongosh --username rootuser --password rootpassword --authenticationDatabase admin
 

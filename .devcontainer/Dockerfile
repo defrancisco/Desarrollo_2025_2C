@@ -8,7 +8,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libnss3 \
     libgconf-2-4 \
     libxss1 \
-    libasound2
+    libasound2 \
+    git \
+    docker
 
 # --- Agrega la clave GPG y el repositorio de MongoDB de la forma más confiable ---
 # Descarga la clave GPG y la añade directamente a la lista de llaves de apt
@@ -21,11 +23,11 @@ RUN echo "deb http://repo.mongodb.org/apt/debian bullseye/mongodb-org/7.0 main" 
 # RUN apt-get update && apt-get install -y mongosh
 
 # Instala las librerías de Python
-RUN pip install --no-cache-dir \
-    pandas \
-    jupyter \
-    mysql-connector-python \
-    pymongo
+# RUN pip install --no-cache-dir \
+#     pandas \
+#     jupyter \
+#     mysql-connector-python \
+#     pymongo
 
 WORKDIR /workspace
 
