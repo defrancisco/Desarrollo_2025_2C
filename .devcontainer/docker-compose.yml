@@ -8,7 +8,6 @@ services:
       dockerfile: Dockerfile
     volumes:
       - ..:/workspace:cached
-    # Mapea el puerto de Jupyter Notebook
     ports:
       - "8888:8888"
     command: sleep infinity
@@ -24,23 +23,29 @@ services:
       - mysql_data:/var/lib/mysql
     ports:
       - "3306:3306"
-  # Nuevo servicio para MongoDB
   mongodb:
     image: mongo:latest
-    # Variables de entorno para MongoDB
     environment:
-      # No es necesario establecer un usuario y contraseña para un entorno de desarrollo simple.
-      # Para producción, es muy recomendable.
       MONGO_INITDB_ROOT_USERNAME: rootuser
       MONGO_INITDB_ROOT_PASSWORD: rootpassword
-    # Mapea el puerto por defecto de MongoDB (27017)
     ports:
       - "27017:27017"
-    # Monta un volumen para que los datos persistan
     volumes:
       - mongodb_data:/data/db
       - ..:/workspace:cached
+  
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    # Variables de entorno opcionales para configuración
+    environment:
+      - CASSANDRA_START_RPC=true
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
 
 volumes:
   mysql_data:
   mongodb_data:
+  cassandra_data:
