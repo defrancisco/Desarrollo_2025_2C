@@ -3,6 +3,17 @@
 
 services:
   cat_track:
+    environment:
+      # MySQL
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root_password # Usamos la variable de ambiente
+      - MYSQL_DB=cat_track_profiles
+      # MongoDB
+      - MONGO_URI=mongodb://mongodb:27017/
+      # Cassandra
+      - CASSANDRA_HOSTS=cassandra
+      - CASSANDRA_PORT=9042
     build:
       context: .
       dockerfile: Dockerfile
@@ -10,7 +21,6 @@ services:
       - ..:/workspace:cached
     ports:
       - "8888:8888"
-    command: sleep infinity
 
   mysql:
     image: mysql:latest
