@@ -54,8 +54,29 @@ services:
       - "9042:9042"
     volumes:
       - cassandra_data:/var/lib/cassandra
+  neo4j:
+      image: neo4j:latest
+      container_name: neo4j-server
+      ports:
+        # Puerto HTTP para la interfaz web (Neo4j Browser)
+        - "7474:7474"
+        # Puerto Bolt para la conexión de drivers y aplicaciones
+        - "7687:7687"
+      volumes:
+        - neo4j_data:/var/lib/neo4j
+        # (Opcional) Monta un volumen para logs
+        # - neo4j_logs:/logs
+        # (Opcional) Monta un volumen para la configuración
+        # - neo4j_conf:/var/lib/neo4j/conf
+      environment:
+        # IMPORTANTE: Establece la contraseña inicial para el usuario 'neo4j'
+        - NEO4J_AUTH=neo4j/neo4jpassword
+        # (Opcional) Permite conexiones sin autenticación
+        # - NEO4J_AUTH=NONE
+      # restart: unless-stopped
 
 volumes:
   mysql_data:
   mongodb_data:
   cassandra_data:
+  neo4j_data:
