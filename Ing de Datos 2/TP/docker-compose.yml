@@ -1,0 +1,134 @@
+# .devcontainer/docker-compose.yml
+
+services:
+  # Entorno de desarrollo (Descomentar para usar)
+  # dev_env:
+  #   environment:
+  #     # MySQL
+  #     - MYSQL_HOST=mysql
+  #     - MYSQL_USER=root
+  #     - MYSQL_PASSWORD=root_password
+  #     - MYSQL_DB=cat_track_profiles
+  #     # MongoDB
+  #     - MONGO_URI=mongodb://mongodb:27017/
+  #     # Cassandra
+  #     - CASSANDRA_HOSTS=cassandra
+  #     - CASSANDRA_PORT=9042
+  #     # Redis 
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - ..:/workspace:cached
+  #   ports:
+  #     - "8888:8888"
+
+# ----------------------------------------------
+# 1. Bases de Datos Persistentes (Políglota)
+# ----------------------------------------------
+
+# Se utiliza para el Core Operacional que requiere integridad transaccional (ACID) 
+# y un esquema rígido para datos maestros y de referencia.
+  mysql:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: my_data_warehouse
+      MYSQL_USER: myuser
+      MYSQL_PASSWORD: mypassword
+    volumes:
+      - mysql_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+# Se usa para datos transaccionales de alta variabilidad,
+# permitiendo anidar el DetalleTicket dentro del Ticket para un acceso rápido y reducir joins.
+  mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: rootuser
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - ..:/workspace:cached
+
+# Es ideal para registros de alta frecuencia de escritura (cada ticket),
+# permitiendo búsquedas rápidas por idCliente y fecha para análisis históricos y de tendencias.
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    environment:
+      - CASSANDRA_START_RPC=true
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+
+# Es la mejor opción para modelar y consultar relaciones sociales complejas 
+# (p. ej., recomendaciones o programas de referidos) entre clientes o promociones.
+  neo4j:
+      image: neo4j:latest
+      container_name: neo4j-server
+      ports:
+        - "7474:7474"
+        - "7687:7687"
+      volumes:
+        - neo4j_data:/var/lib/neo4j
+      environment:
+        - NEO4J_AUTH=neo4j/neo4jpassword
+
+# ----------------------------------------------
+# 2. Base de Datos de Caching y Sesiones (Redis)
+# ----------------------------------------------
+
+# Se usaría como capa de caching para almacenar temporalmente datos de alta lectura, 
+# como el saldo actual del cliente o los productos más populares, mejorando el rendimiento.
+  redis:
+    image: redis:latest
+    container_name: redis_cache
+    ports:
+      - "6379:6379" # Puerto estándar de Redis
+    volumes:
+      - redis_data:/data # Opcional: Persistencia de datos de caché
+    # Command opcional para configurar Redis como caché LRU (si se quiere optimizar la memoria)
+    # command: redis-server --maxmemory 100mb --maxmemory-policy allkeys-lru
+# ----------------------------------------------
+# 3. Servicio de Inicialización Separado
+# ----------------------------------------------
+  setup_service:
+    build:
+      context: ./setup  # Ruta al Dockerfile que creaste
+      dockerfile: Dockerfile
+    # Asegura que este servicio solo se ejecute UNA VEZ
+    restart: "no" 
+    # Depende de que TODAS las bases de datos estén al menos levantadas (sin garantizar que estén listas)
+    depends_on:
+      - mysql
+      - mongodb
+      - cassandra
+      - neo4j
+      - redis
+    volumes:
+      # Montar todos los scripts de setup en un solo directorio
+      - ./setup/01_mysql_init.sql:/setup_scripts/01_mysql_init.sql
+      - ./setup/02_mongodb_init.js:/setup_scripts/02_mongodb_init.js
+      - ./setup/03_cassandra_init.cql:/setup_scripts/03_cassandra_init.cql
+      - ./setup/04_neo4j_init.cypher:/setup_scripts/04_neo4j_init.cypher
+      # No necesitamos montar el archivo de configuración de Redis aquí
+    environment:
+      # Pasar credenciales si el script las necesita (aunque ya están hardcodeadas)
+      - MYSQL_ROOT_PASSWORD=root_password
+      - NEO4J_PASSWORD=neo4jpassword
+# ----------------------------------------------
+# 4. Volúmenes
+# ----------------------------------------------
+volumes:
+  mysql_data:
+  mongodb_data:
+  cassandra_data:
+  neo4j_data:
+  redis_data:

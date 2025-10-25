@@ -1,0 +1,94 @@
+@startuml Starbucks_Poliglota_Definitiva
+skinparam linetype ortho
+skinparam Entity {
+  BorderColor black
+  FontName Arial
+}
+
+' 1. Definición de Estereotipos para DBs
+entity Cliente <<(C,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  nombre : string
+  email : string <<UNIQUE>>
+  telefono : string
+  saldo : double
+}
+
+entity Sucursal <<(S,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  pais : string
+  ciudad : string
+  direccion : string
+  horario : string
+}
+
+entity Promocion <<(P,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  nombre : string
+  descuento : double
+  fechaInicio : date
+  fechaFin : date
+}
+
+entity Producto <<(R,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  nombre : string
+  precio : double
+}
+
+entity Stock <<(S,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  idSucursal : int <<FK>>
+  idProducto : int <<FK>>
+  cantidad : int
+}
+
+' 2. Entidad Transaccional (MongoDB)
+entity Ticket <<(T,#90EE90) MongoDB>> {
+  id : string <<PK>>
+  --
+  idCliente : int <<FK_MySQL>>
+  idSucursal : int <<FK_MySQL>>
+  fecha : date
+  total : double
+  metodoPago : string
+  idPromocion : int <<FK_MySQL>> (opcional)
+  **detalles : [DetalleTicket]**
+}
+
+' 3. Entidad Analítica (Cassandra)
+entity HistorialCompra <<(H,#FFDAB9) Cassandra>> {
+  idCliente : int <<PK, Partition Key>>
+  fecha : datetime <<PK, Clustering Key>>
+  --
+  idTicket : string
+  total : double
+}
+
+' 4. Entidad de Relación (Neo4j)
+entity RedSocial <<(N,#FFC0CB) Neo4j>> {
+  id : int <<PK>>
+  --
+  nombre : string
+}
+
+' 5. Relaciones
+Cliente "1" -- "N" Ticket : genera
+Sucursal "1" -- "N" Ticket : emite
+
+Sucursal "1" -- "N" Stock : posee
+Producto "1" -- "N" Stock : disponible_en
+
+Promocion "0..1" -- "N" Ticket : aplicada_a
+
+Cliente "1" -- "N" HistorialCompra : registra
+
+' Relación Gráfica (Neo4j)
+Cliente "N" -- "N" RedSocial : SIGUE
+
+@enduml
