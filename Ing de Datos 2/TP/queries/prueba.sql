@@ -4,4 +4,4 @@ SELECT
     'Conexión Exitosa a MySQL' AS Status, 
     VERSION() AS Version, 
     CURRENT_USER() AS User;
-    
+SHOW TABLES;
