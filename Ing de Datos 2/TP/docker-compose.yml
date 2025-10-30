@@ -1,30 +1,6 @@
 # .devcontainer/docker-compose.yml
 
 services:
-  # Entorno de desarrollo (Descomentar para usar)
-  # dev_env:
-  #   environment:
-  #     # MySQL
-  #     - MYSQL_HOST=mysql
-  #     - MYSQL_USER=root
-  #     - MYSQL_PASSWORD=root_password
-  #     - MYSQL_DB=cat_track_profiles
-  #     # MongoDB
-  #     - MONGO_URI=mongodb://mongodb:27017/
-  #     # Cassandra
-  #     - CASSANDRA_HOSTS=cassandra
-  #     - CASSANDRA_PORT=9042
-  #     # Redis 
-  #     - REDIS_HOST=redis
-  #     - REDIS_PORT=6379
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   volumes:
-  #     - ..:/workspace:cached
-  #   ports:
-  #     - "8888:8888"
-
 # ----------------------------------------------
 # 1. Bases de Datos Persistentes (Políglota)
 # ----------------------------------------------
@@ -124,7 +100,26 @@ services:
       - MYSQL_ROOT_PASSWORD=root_password
       - NEO4J_PASSWORD=neo4jpassword
 # ----------------------------------------------
-# 4. Volúmenes
+# 4. La cli como servicio aparte
+# ----------------------------------------------
+  cli:
+    build:
+      context: ./cli
+      dockerfile: Dockerfile
+    # Montamos la carpeta de scripts de consultas para que el CLI pueda acceder a ellos
+    volumes:
+      - ./queries:/app/queries
+    # Le damos acceso a la red para que pueda ejecutar comandos en todas las DBs
+    depends_on:
+      - mysql
+      - mongodb
+      - cassandra
+      - neo4j
+      - redis
+    # Usa un comando dummy para mantener el contenedor en ejecución hasta que lo uses
+    command: /bin/bash -c "tail -f /dev/null"
+# ----------------------------------------------
+# 5. Volúmenes
 # ----------------------------------------------
 volumes:
   mysql_data:
