@@ -15,7 +15,11 @@ EXECUTOR_MAP = {
     ".js": {
         "cmd": "mongosh mongodb://mongodb:27017/starbucks_transactions -u rootuser -p rootpassword --authenticationDatabase admin --file {file} --quiet",
         "db": "MongoDB"
-    },".cql": {"cmd": "cqlsh -f {file} cassandra 9042", "db": "Cassandra"},
+    },
+    ".cql": {
+        "cmd": "cqlsh cassandra -f {file}",
+        "db": "Cassandra"
+    },
     ".cypher": {"cmd": "echo 'cypher-shell requires complex setup in this CLI, please run manually' ", "db": "Neo4j"},
     ".py": {"cmd": "python {file}", "db": "Redis"},
 }

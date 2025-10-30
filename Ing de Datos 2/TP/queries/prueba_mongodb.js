@@ -1,4 +1,3 @@
-// queries/test_mongodb.js
 // Script de prueba para verificar la conectividad y la base de datos 'starbucks_transactions'.
 
 // 1. Mostrar estado de conexión y versión
