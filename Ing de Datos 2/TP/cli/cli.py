@@ -20,7 +20,10 @@ EXECUTOR_MAP = {
         "cmd": "cqlsh cassandra -f {file}",
         "db": "Cassandra"
     },
-    ".cypher": {"cmd": "echo 'cypher-shell requires complex setup in this CLI, please run manually' ", "db": "Neo4j"},
+    ".cypher": {
+    "cmd": "QUERY=$(cat {file}); printf '{{\"statements\": [{{ \"statement\": \"%s\" }}]}}' \"$QUERY\" | curl -s -X POST -H 'Content-Type: application/json' -u neo4j:neo4jpassword 'http://neo4j:7474/db/neo4j/tx/commit' -d @-",
+    "db": "Neo4j"
+    },
     ".py": {"cmd": "python {file}", "db": "Redis"},
 }
 
