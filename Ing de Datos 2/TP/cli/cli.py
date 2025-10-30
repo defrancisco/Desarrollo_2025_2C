@@ -12,8 +12,10 @@ EXECUTOR_MAP = {
         "cmd": "mysql  -h mysql -u root -proot_password my_data_warehouse --batch --table --skip-ssl < {file}",
         "db": "MySQL"
     },
-    ".js": {"cmd": "mongosh mongodb://mongodb:27017/starbucks_transactions -u rootuser -p rootpassword --authenticationDatabase admin --file {file}", "db": "MongoDB"},
-    ".cql": {"cmd": "cqlsh -f {file} cassandra 9042", "db": "Cassandra"},
+    ".js": {
+        "cmd": "mongosh mongodb://mongodb:27017/starbucks_transactions -u rootuser -p rootpassword --authenticationDatabase admin --file {file} --quiet",
+        "db": "MongoDB"
+    },".cql": {"cmd": "cqlsh -f {file} cassandra 9042", "db": "Cassandra"},
     ".cypher": {"cmd": "echo 'cypher-shell requires complex setup in this CLI, please run manually' ", "db": "Neo4j"},
     ".py": {"cmd": "python {file}", "db": "Redis"},
 }

@@ -12,7 +12,7 @@ FROM neo4j:5-community AS cypher-shell-extractor
 FROM ubuntu:22.04 
 
 # Definición de variables para MongoDB
-ENV MONGO_VERSION 6.0
+ENV MONGO_VERSION 8.0
 ENV UBUNTU_RELEASE focal
 
 # -------------------------------------------------------------------

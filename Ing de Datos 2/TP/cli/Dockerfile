@@ -9,6 +9,16 @@ RUN apt-get update && apt-get install -y \
     default-mysql-client \
     netcat-openbsd \
     vim \
+    wget \
+    gnupg \
+    # -------------------------------------------------------------------
+    # 1. SETUP DE MONGOSH
+    # -------------------------------------------------------------------
+    && curl -fsSL https://pgp.mongodb.com/server-8.0.asc | gpg --dearmor -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+    && echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/8.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-8.0.list \
+    && apt-get update \
+    && apt-get install -y mongodb-mongosh \
+    \
     && rm -rf /var/lib/apt/lists/*
 
 # Instalación de clientes de BD (cqlsh requiere pip)
