@@ -63,6 +63,26 @@ CREATE TABLE IF NOT EXISTS Stock (
     UNIQUE KEY (idSucursal, idProducto) -- Ensure unique stock per product/store
 );
 
+
+-- ----------------------------------------------------
+-- 2.5 Limpio Datos
+-- ----------------------------------------------------
+-- 1. DESHABILITAR TEMPORALMENTE LA VERIFICACIÓN DE LLAVES FORÁNEAS
+SET FOREIGN_KEY_CHECKS = 0;
+
+-- 2. TRUNCAR TABLAS
+-- TRUNCATE es más rápido que DELETE porque reinicia el AUTO_INCREMENT
+-- y no registra transacciones individuales (es DDL).
+
+TRUNCATE TABLE Stock;       -- Siempre empezar por las tablas dependientes (las que tienen FKs hacia otras)
+TRUNCATE TABLE Producto;
+TRUNCATE TABLE Sucursal;
+TRUNCATE TABLE Promocion;
+TRUNCATE TABLE Cliente;     -- Y terminar por las tablas principales
+
+-- 3. RE-HABILITAR LA VERIFICACIÓN DE LLAVES FORÁNEAS
+SET FOREIGN_KEY_CHECKS = 1;
+
 -- ----------------------------------------------------
 -- 3. INITIAL INSERTS (Seed Data)
 -- ----------------------------------------------------

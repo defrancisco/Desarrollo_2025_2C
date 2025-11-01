@@ -24,7 +24,13 @@ EXECUTOR_MAP = {
     "cmd": "QUERY=$(cat {file}); printf '{{\"statements\": [{{ \"statement\": \"%s\" }}]}}' \"$QUERY\" | curl -s -X POST -H 'Content-Type: application/json' -u neo4j:neo4jpassword 'http://neo4j:7474/db/neo4j/tx/commit' -d @-",
     "db": "Neo4j"
     },
-    ".py": {"cmd": "python {file}", "db": "Redis"},
+
+    ".py": {"cmd": "python {file}", "db": "Python File"},
+    ".sh": {
+        # Usamos 'sh {file}' para ejecutar el script completo.
+        "cmd": "sh {file}", 
+        "db": "Políglota" 
+    },
 }
 
 def clear_screen():

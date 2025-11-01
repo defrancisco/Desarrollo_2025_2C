@@ -5,3 +5,6 @@ SELECT
     VERSION() AS Version, 
     CURRENT_USER() AS User;
 SHOW TABLES;
+
+SELECT *
+FROM Sucursal;

@@ -5,14 +5,14 @@
 // 1. ELIMINAR COLECCIONES PREVIAS (Idempotencia)
 // -----------------------------------------------------------
 print("Limpiando colecciones existentes...");
-db.transactions.drop();
+db.ticket.drop();
 db.stores.drop();
 db.products.drop();
 
 // -----------------------------------------------------------
 // 2. Crear las colecciones (si no existen)
 // -----------------------------------------------------------
-db.createCollection("transactions");
+db.createCollection("ticket");
 db.createCollection("stores");
 db.createCollection("products");
 
@@ -23,26 +23,43 @@ db.createCollection("products");
 // -----------------------------------------------------------
 
 // Colección 'transactions'
-db.transactions.insertMany([
+db.ticket.insertMany([
     {
-        transaction_id: 1,
-        store_id: 101,
-        date: new Date("2024-09-01T08:30:00Z"),
-        total_amount: 5.25,
-        items: [
-            { product_id: 501, quantity: 1, price: 5.25 }
+        ticket_id: 1,
+        sucursal_id: 1,
+        cliente_id:1,
+        fecha: new Date("2024-09-01T08:30:00Z"),
+        total: 6,
+        metodo_pago: 'Efectivo',
+        promocion_id: 1,
+        detalles: [
+            { producto_id: 1, cantidad: 2, precio: 3 }
         ]
     },
     {
-        transaction_id: 2,
-        store_id: 102,
-        date: new Date("2024-09-01T10:15:00Z"),
-        total_amount: 8.50,
-        items: [
-            { product_id: 502, quantity: 1, price: 3.50 },
-            { product_id: 503, quantity: 1, price: 5.00 }
+        ticket_id: 2,
+        sucursal_id: 2,
+        cliente_id: 2,
+        fecha: new Date("2025-09-01T08:30:00Z"),
+        total: 7,
+        metodo_pago: 'Tarjeta',
+        promocion_id: 2,
+        detalles: [
+            { producto_id: 2, cantidad: 1, precio: 7 }
         ]
-    }
+    },
+    {
+        ticket_id: 3,
+        sucursal_id: 2,
+        cliente_id:1,
+        fecha: new Date("2025-09-01T08:30:00Z"),
+        total: 32,
+        metodo_pago: 'Efectivo',
+        promocion_id: 1,
+        detalles: [
+            { producto_id: 1, cantidad: 2, precio: 16 }
+        ]
+    },
 ]);
 
 // Colección 'stores'

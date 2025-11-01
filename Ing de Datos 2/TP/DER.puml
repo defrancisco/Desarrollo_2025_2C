@@ -42,6 +42,13 @@ entity Producto <<(R,#ADD8E6) MySQL>> {
   --
   nombre : string
   precio : double
+  tipo_id: int 
+}
+
+entity Tipo_Producto <<(R,#ADD8E6) MySQL>> {
+  id : int <<PK>>
+  --
+  nombre : string
 }
 
 entity Stock <<(S,#ADD8E6) MySQL>> {
@@ -87,6 +94,7 @@ Sucursal "1" -- "N" Ticket : emite
 
 Sucursal "1" -- "N" Stock : posee
 Producto "1" -- "N" Stock : disponible_en
+Tipo_Producto "1" -- "N" Producto : pertenece_a
 
 Promocion "0..1" -- "N" Ticket : aplicada_a
 
