@@ -14,7 +14,7 @@ entity Cliente <<(C,#ADD8E6) MySQL>> {
   telefono : string
   saldo : double
   metodo_pago_preferido : string
-  estado_membresia : bool
+  stars_acumuladas : int
 }
 
 entity Sucursal <<(S,#ADD8E6) MySQL>> {

@@ -7,6 +7,18 @@
 USE my_data_warehouse;
 
 -- ----------------------------------------------------
+-- 1.5 Drop tables if exists
+-- ----------------------------------------------------
+SET FOREIGN_KEY_CHECKS = 0;
+
+DROP TABLE IF EXISTS Stock;       -- Siempre empezar por las tablas dependientes (las que tienen FKs hacia otras)
+DROP TABLE IF EXISTS Producto;
+DROP TABLE IF EXISTS Sucursal;
+DROP TABLE IF EXISTS Promocion;
+DROP TABLE IF EXISTS Cliente;     -- Y terminar por las tablas principales
+
+SET FOREIGN_KEY_CHECKS = 1;
+-- ----------------------------------------------------
 -- 2. TABLE CREATION (Core Entities)
 -- ----------------------------------------------------
 
@@ -18,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Cliente (
     telefono VARCHAR(20),
     domicilio VARCHAR(255),
     saldo DECIMAL(10, 2) DEFAULT 0.00,
-    nivel VARCHAR(50) NOT NULL, -- Membership level (e.g., Gold, Silver)
+    stars_acumuladas INT,
     fechaRegistro DATE NOT NULL,
     estadoMembresia VARCHAR(50) NOT NULL
 );
@@ -63,26 +75,6 @@ CREATE TABLE IF NOT EXISTS Stock (
     UNIQUE KEY (idSucursal, idProducto) -- Ensure unique stock per product/store
 );
 
-
--- ----------------------------------------------------
--- 2.5 Limpio Datos
--- ----------------------------------------------------
--- 1. DESHABILITAR TEMPORALMENTE LA VERIFICACIÓN DE LLAVES FORÁNEAS
-SET FOREIGN_KEY_CHECKS = 0;
-
--- 2. TRUNCAR TABLAS
--- TRUNCATE es más rápido que DELETE porque reinicia el AUTO_INCREMENT
--- y no registra transacciones individuales (es DDL).
-
-TRUNCATE TABLE Stock;       -- Siempre empezar por las tablas dependientes (las que tienen FKs hacia otras)
-TRUNCATE TABLE Producto;
-TRUNCATE TABLE Sucursal;
-TRUNCATE TABLE Promocion;
-TRUNCATE TABLE Cliente;     -- Y terminar por las tablas principales
-
--- 3. RE-HABILITAR LA VERIFICACIÓN DE LLAVES FORÁNEAS
-SET FOREIGN_KEY_CHECKS = 1;
-
 -- ----------------------------------------------------
 -- 3. INITIAL INSERTS (Seed Data)
 -- ----------------------------------------------------
@@ -99,8 +91,9 @@ INSERT IGNORE INTO Producto (nombre, tipo, precio) VALUES
 ('Frappuccino', 'Bebida', 5.50);
 
 -- Inserta un cliente. Si el cliente ya existe (ej. por email único), lo ignora.
-INSERT IGNORE INTO Cliente (nombre, email, telefono, domicilio, saldo, nivel, fechaRegistro, estadoMembresia) VALUES
-('Alice Johnson', 'alice@example.com', '555-1234', '10 Elm St', 15.00, 'Gold', CURDATE(), 'Activo');
+INSERT IGNORE INTO Cliente (nombre, email, telefono, domicilio, saldo, stars_acumuladas, fechaRegistro, estadoMembresia) VALUES
+('Alice Johnson', 'alice@example.com', '555-1234', '10 Elm St', 15.00, 5, CURDATE(), 'Activo'),
+('Jhon Doe', 'john.doe@example.com', '555-1234-5678', '10 Elm St', 150.00, 0, '2000-01-01', 'Inactivo');
 
 -- Inserta una promoción. Si la promoción ya existe, la ignora.
 INSERT IGNORE INTO Promocion (nombre, tipo, descuento, pais, fechaInicio, fechaFin) VALUES
