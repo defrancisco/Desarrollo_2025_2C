@@ -75,6 +75,12 @@ CREATE TABLE IF NOT EXISTS Stock (
     UNIQUE KEY (idSucursal, idProducto) -- Ensure unique stock per product/store
 );
 
+CREATE TABLE Tipo_Producto (
+id INT PRIMARY KEY AUTO_INCREMENT,
+nombre VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre descriptivo del tipo de producto (e.g., Bebida Caliente, Snack, Café en Grano)',
+descripcion VARCHAR(255) COMMENT 'Descripción opcional del tipo.'
+) COMMENT 'Tabla que categoriza los productos (Bebidas, Comida, Merchandising, etc.).';
+
 -- ----------------------------------------------------
 -- 3. INITIAL INSERTS (Seed Data)
 -- ----------------------------------------------------
@@ -103,3 +109,12 @@ INSERT IGNORE INTO Promocion (nombre, tipo, descuento, pais, fechaInicio, fechaF
 INSERT IGNORE INTO Stock (idSucursal, idProducto, cantidad) VALUES
 (1, 1, 100), (1, 2, 50),
 (2, 1, 80), (2, 3, 60);
+
+INSERT INTO Tipo_Producto (nombre, descripcion) VALUES
+('Bebida Caliente', 'Bebidas servidas calientes, como Lattes, Capuccinos, Té.'),
+('Bebida Fría', 'Bebidas servidas frías, como Iced Lattes, Frappuccinos, Refrescos.'),
+('Panadería/Pastelería', 'Productos horneados, como muffins, croissants, tortas.'),
+('Snack', 'Pequeños alimentos para llevar, como barras de cereal o galletas.'),
+('Merchandising', 'Artículos no consumibles, como tazas, termos y accesorios.'),
+('Café en Grano', 'Bolsas de café para preparar en casa.'),
+('Desayuno/Almuerzo', 'Comidas más sustanciosas, como sándwiches o ensaladas.');
