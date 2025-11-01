@@ -82,6 +82,11 @@ El *setup* completo se orquesta mediante **Docker Compose**, y se incluye una **
     ```bash
     docker compose down -v
     ```
+5. **Conectar al servicio:**
+    Para conectarte con algun servicio en particular.
+    ```bash
+    docker exec -it 84c107aef385 bash
+    ```
 
 ## 🔑 Credenciales (Configuración por Defecto)
 
