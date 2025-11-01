@@ -24,27 +24,32 @@ El *setup* completo se orquesta mediante **Docker Compose**, y se incluye una **
 ## 📦 Estructura del Proyecto
 
 ```
-├── TP main
-│   ├── cli                                 # Código fuente de la Interfaz TUI (Python)
-│   │   ├── cli.py                          # Lógica principal de la TUI
-│   │   └── Dockerfile                      # Dockerfile para construir el entorno CLI
-│   ├── DER.png                             # Diagrama Entidad-Relación del proyecto
-│   ├── DER.puml                            # Fuente del diagrama (PlantUML)
-│   ├── docker-compose.yml                  # Definición de todos los servicios
-│   ├── queries
-│   │   ├── productos_sin_stock_global.sql
-│   │   ├── promociones_activas_hoy.sql
-│   │   └── prueba.sql                      # Ejemplo de consulta que muestra tablas e info de MySQL
-│   ├── README.md
-│   └── setup
-│       ├── 01_mysql_init.sql               # Codigo sql a ejecutar para inicializar la DB MySQL
-│       ├── 02_mongodb_init.js              # Codigo js a ejecutar para inicializar la DB MongoDB
-│       ├── 03_cassandra_init.cql           # Codigo cql a ejecutar para inicializar la DB Cassandra
-│       ├── 04_neo4j_init.cypher            # Codigo cypher a ejecutar para inicializar la DB Neo4j
-│       ├── 05_redis_config.conf            # Codigo config de redis
-│       ├── Dockerfile                      # Dockerfile para construir el entorno setup-service
-│       ├── init_all_dbs.sh                 # script para ejecutar inits
-│       └── wait-for-it.sh                  # wait script para no ejecutar sobre DBs que no estan listas
+├── TP
+│   ├── cli                                 # Código fuente de la Interfaz TUI (Python)
+│   │   ├── cli.py                          # Lógica principal de la TUI
+│   │   └── Dockerfile                      # Dockerfile para construir el entorno CLI
+│   ├── DER.png                             # Diagrama Entidad-Relación del proyecto
+│   ├── DER.puml                            # Fuente del diagrama (PlantUML)
+│   ├── docker-compose.yml                  # Definición de todos los servicios
+│   ├── queries
+│   │   ├── mongo_query_top5.js               # Obtengo top articulos vendidos para id_sucursales especificos.
+│   │   ├── productos_sin_stock_global.sql    # Query random
+│   │   ├── promociones_activas_hoy.sql       # Otra Query random
+│   │   ├── prueba_cassandra.cql              # Archivo de pruebas sobre Cassandra
+│   │   ├── prueba_mongodb.js                 # Archivo de pruebas sobre MongoDB
+│   │   ├── prueba_mysql.sql                  # Archivo de pruebas sobre MySQL
+│   │   ├── prueba_neo4j.cypher               # Archivo de pruebas sobre Neo4j
+│   │   └── top_5_prods.py                    # Archivo de la primera lista
+│   ├── README.md
+│   └── setup
+│       ├── 01_mysql_init.sql                # Codigo sql a ejecutar para inicializar la DB MySQL
+│       ├── 02_mongodb_init.js               # Codigo js a ejecutar para inicializar la DB MongoDB
+│       ├── 03_cassandra_init.cql            # Codigo cql a ejecutar para inicializar la DB Cassandra
+│       ├── 04_neo4j_init.cypher             # Codigo cypher a ejecutar para inicializar la DB Neo4j
+│       ├── 05_redis_config.conf             # Codigo config de redis
+│       ├── Dockerfile                       # Dockerfile para construir el entorno setup-service
+│       ├── init_all_dbs.sh                  # script para ejecutar inits
+│       └── wait-for-it.sh                   # wait script para no ejecutar sobre DBs que no estan listas
 ```
 
 ## ⚙️ Configuración y Ejecución
