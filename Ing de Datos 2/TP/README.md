@@ -6,6 +6,9 @@ Este proyecto implementa una arquitectura de datos políglota para simular los s
 
 El *setup* completo se orquesta mediante **Docker Compose**, y se incluye una **Interfaz de Usuario de Texto (TUI)** para demostrar la funcionalidad de las consultas en cada motor de base de datos.
 
+## DER de la applicacion:
+![Texto alternativo para la imagen](DER.png)
+
 ## 🚀 Arquitectura Políglota (Servicios)
 
 | Servicio | Tecnología | Propósito |
