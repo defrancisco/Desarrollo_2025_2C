@@ -89,7 +89,8 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- Inserta sucursales. Si una sucursal ya existe (ej. por clave primaria), la ignora.
 INSERT IGNORE INTO Sucursal (pais, ciudad, direccion, horario, capacidad) VALUES
 ('USA', 'New York', '123 Main St', '7am-9pm', 50),
-('Argentina', 'Buenos Aires', 'Av. Corrientes 456', '8am-8pm', 40);
+('Argentina', 'Buenos Aires', 'Av. Corrientes 456', '8am-8pm', 40),
+('Argentina', 'Buenos Aires', 'Av. Del Libertador 69', '8am-8pm', 20);
 
 -- Inserta productos. Si un producto ya existe (ej. por nombre único), lo ignora.
 INSERT IGNORE INTO Producto (nombre, tipo, precio) VALUES

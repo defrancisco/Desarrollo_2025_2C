@@ -60,6 +60,18 @@ db.ticket.insertMany([
             { producto_id: 1, cantidad: 2, precio: 16 }
         ]
     },
+        {
+        ticket_id: 3,
+        sucursal_id: 3,
+        cliente_id:2,
+        fecha: new Date("2025-09-01T08:30:00Z"),
+        total: 32,
+        metodo_pago: 'Efectivo',
+        promocion_id: 1,
+        detalles: [
+            { producto_id: 3, cantidad: 2, precio: 16 }
+        ]
+    },
 ]);
 
 // Colección 'stores'
