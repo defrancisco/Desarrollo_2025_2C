@@ -8,3 +8,6 @@ SHOW TABLES;
 
 SELECT *
 FROM Sucursal;
+
+SELECT *
+FROM Tipo_Producto;

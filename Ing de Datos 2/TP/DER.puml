@@ -61,14 +61,14 @@ entity Stock <<(S,#ADD8E6) MySQL>> {
 
 ' 2. Entidad Transaccional (MongoDB)
 entity Ticket <<(T,#90EE90) MongoDB>> {
-  id : string <<PK>>
+  ticket_id : string <<PK>>
   --
-  idCliente : int <<FK_MySQL>>
-  idSucursal : int <<FK_MySQL>>
+  cliente_id : int <<FK_MySQL>>
+  sucursal_id : int <<FK_MySQL>>
   fecha : date
   total : double
-  metodoPago : string
-  idPromocion : int <<FK_MySQL>> (opcional)
+  metodo_pago : string
+  promocion_id : int <<FK_MySQL>> (opcional)
   **detalles : [DetalleTicket]**
 }
 

@@ -1,11 +1,11 @@
 Top 5 productos más vendidos en un pais especifico. 
-
+Done
 Clientes con más Stars acumulados. 
-
+Done
 Productos tipo “bebida” con precio mayor a 5 USD. 
-
+Done
 Órdenes de un cliente en septiembre. 
-
+Done
 Órdenes por (fecha, sucursal). 
 
 Canjes por (cliente, fecha). 

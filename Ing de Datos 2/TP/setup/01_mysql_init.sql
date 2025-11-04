@@ -16,7 +16,7 @@ DROP TABLE IF EXISTS Producto;
 DROP TABLE IF EXISTS Sucursal;
 DROP TABLE IF EXISTS Promocion;
 DROP TABLE IF EXISTS Cliente;     -- Y terminar por las tablas principales
-
+DROP  TABLE IF EXISTS Tipo_Producto;
 SET FOREIGN_KEY_CHECKS = 1;
 -- ----------------------------------------------------
 -- 2. TABLE CREATION (Core Entities)
@@ -75,9 +75,9 @@ CREATE TABLE IF NOT EXISTS Stock (
     UNIQUE KEY (idSucursal, idProducto) -- Ensure unique stock per product/store
 );
 
-CREATE TABLE Tipo_Producto (
+CREATE TABLE IF NOT EXISTS Tipo_Producto (
 id INT PRIMARY KEY AUTO_INCREMENT,
-nombre VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre descriptivo del tipo de producto (e.g., Bebida Caliente, Snack, Café en Grano)',
+idTipoProducto VARCHAR(50) NOT NULL UNIQUE COMMENT 'Nombre descriptivo del tipo de producto (e.g., Bebida Caliente, Snack, Café en Grano)',
 descripcion VARCHAR(255) COMMENT 'Descripción opcional del tipo.'
 ) COMMENT 'Tabla que categoriza los productos (Bebidas, Comida, Merchandising, etc.).';
 
@@ -92,9 +92,9 @@ INSERT IGNORE INTO Sucursal (pais, ciudad, direccion, horario, capacidad) VALUES
 
 -- Inserta productos. Si un producto ya existe (ej. por nombre único), lo ignora.
 INSERT IGNORE INTO Producto (nombre, tipo, precio) VALUES
-('Latte', 'Bebida', 4.50),
-('Muffin', 'Comida', 3.00),
-('Frappuccino', 'Bebida', 5.50);
+('Latte', 'Bebida Caliente', 4.50),
+('Muffin', 'Panadería/Pasteleria', 3.00),
+('Frappuccino', 'Bebida Fria', 5.50);
 
 -- Inserta un cliente. Si el cliente ya existe (ej. por email único), lo ignora.
 INSERT IGNORE INTO Cliente (nombre, email, telefono, domicilio, saldo, stars_acumuladas, fechaRegistro, estadoMembresia) VALUES
@@ -110,9 +110,9 @@ INSERT IGNORE INTO Stock (idSucursal, idProducto, cantidad) VALUES
 (1, 1, 100), (1, 2, 50),
 (2, 1, 80), (2, 3, 60);
 
-INSERT INTO Tipo_Producto (nombre, descripcion) VALUES
+INSERT INTO Tipo_Producto (idTipoProducto, descripcion) VALUES
 ('Bebida Caliente', 'Bebidas servidas calientes, como Lattes, Capuccinos, Té.'),
-('Bebida Fría', 'Bebidas servidas frías, como Iced Lattes, Frappuccinos, Refrescos.'),
+('Bebida Fria', 'Bebidas servidas frías, como Iced Lattes, Frappuccinos, Refrescos.'),
 ('Panadería/Pastelería', 'Productos horneados, como muffins, croissants, tortas.'),
 ('Snack', 'Pequeños alimentos para llevar, como barras de cereal o galletas.'),
 ('Merchandising', 'Artículos no consumibles, como tazas, termos y accesorios.'),
