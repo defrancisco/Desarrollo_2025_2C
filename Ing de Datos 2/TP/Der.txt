@@ -1,0 +1,146 @@
+DER Según el archivo del caso
+
+CLIENTE {
+    clientID: int <<PK>>
+    nombre: string
+    email: string UNIQUE
+    país: string
+    metodoPagoPreferrido: string
+    estadoMembresia:string
+}
+
+MEMBRESIA {
+    membresiaID: INT <<PK>>
+    nombrePrograma: string
+    starsPorUnidadMonetaria: decimal # estrellas son los puntos
+}
+
+----
+
+SUCURSAL {
+    sucursalID: int <<PK>>
+    pais: string
+    ubicacion: string
+    horarioApertura: int
+    horarioCierre: int
+    capacidad: int
+}
+
+PROMOCION {
+    promocionID: int <<PK>>
+    producto: string
+    region: string
+}
+
+---- 
+PRODUCTO{
+    productoID: int <<PK>>
+    nombre: string
+    precioBase: decimal
+    categoria: string/map (Bebida, Alimento, Merchandising)
+}
+
+# los productos son bebidas, alimentos y artículos de marchandising
+
+PERSONALIZACION {
+    personalizacionID: int <<PK>>
+    opcion1 
+        tamaño: string
+        tipoDeLeche: string
+        endulzante: int
+        topping: descripcion
+    opcion2
+        tipo : string (Ej: Tamaño, TipoLeche, Endulzante)
+        eleccion : string (Ej: Grande, Descremada, Vainilla)
+    ajustePrecio: decimal
+
+}
+
+PRODUCTO_PERSONALIZACION {
+  productoID : int <<PK>> <<FK a PRODUCTO>>
+  personalizacionID : int <<PK>> <<FK a PERSONALIZACION>>
+  --
+  esOpcional : boolean
+}
+
+------------
+ORDEN {
+    ordenID: INT <<PK>>
+    fechaHora: datetime
+    tipoPedido : string (Ej: Tienda, Drive-Thru, App)
+    metodoPago : string (Ej: Tarjeta, App, Efectivo)
+    montoTotal : decimal
+    ticketFinal : string 
+    clienteID : int <<FK a CLIENTE, Puede ser NULL (Invitado)>>
+    sucursalID : int <<FK a SUCURSAL>>
+}
+
+ORDEN_PERSONALIZACION {
+    ordenID: int <<PK>> <<FK a ORDEN>>
+    personalizacionID : int <<PK>> <<FK a PERSONALIZACION>>
+}
+
+
+------
+NIVEL_RECOMPENSA {
+    nivelIR: int <<PK>>
+    nombrePrograma: string
+    minStars: int
+    maxStars: int
+    programaID: int <<FK a MEMBRESIA>>
+}
+
+SALDO_STARS {
+  clienteID : INT <<PK>> <<FK a CLIENTE>>
+  programaID : INT <<PK>> <<FK a PROGRAMA_LEALTAD>>
+  totalStarsAcumuladas : INT
+  nivelIDActual : INT <<FK a NIVEL_RECOMPENSA>>
+  fechaUltimaActualizacion : DATETIME
+}
+
+
+TRANSACCION_STARS {
+  transaccionID : INT <<PK>>
+
+  tipoTransaccion : STRING (Ej: Acumulacion, Canje)
+  cantidadStars : INT
+  fechaTransaccion : DATETIME
+  clienteID : INT <<FK a CLIENTE>>
+  ordenID : INT <<FK a ORDEN, Puede ser NULL si es un ajuste manual>>
+}
+
+
+
+PROMOCION_LEALTAD {
+  promocionLealtadID : INT <<PK>>
+  nombre : STRING (Ej: Doble Stars los Martes)
+  descripcion : TEXT
+  fechaInicio : DATE
+  fechaFin : DATE
+  reglaAplicable : STRING
+  nivelID : INT <<FK a NIVEL_RECOMPENSA, Puede ser NULL (Promoción general)>>
+}
+
+
+
+PROMOCION_REGIONAL {
+  PromoRegionID : INT <<PK>>
+  Nombre : STRING (Ej: Pumpkin Spice Latte)
+  Descripcion : TEXT
+  FechaInicio : DATE
+  FechaFin : DATE
+  Pais : STRING
+}
+
+---------------------------------------------------
+
+CUPON {
+  CuponID : INT <<PK>>
+  Codigo : STRING <<UNIQUE>>
+  Descripcion : STRING
+  ValorDescuento : DECIMAL
+  TipoDescuento : STRING (Ej: Porcentaje, Monto)
+  FechaExpiracion : DATE
+  Usado : BOOLEAN
+  OrdenIDUso : INT <<FK a ORDEN, Puede ser NULL>>
+}
